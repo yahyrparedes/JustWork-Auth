@@ -3,9 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 
 from rest_framework import generics, permissions
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer
+from rest_framework.views import APIView
+
+from .serializers import UserSerializer, RegisterSerializer, RegisterUserSerializer, RegisterCompanySerializer
+
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -35,3 +39,16 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
+
+
+class RegisterCompanyCustom(APIView):
+    #ueryset = Company.object.all()
+    def post(self, request, *args, **kwargs):
+
+        data = RegisterCompanySerializer(data=request.data)
+        data.is_valid(raise_exception=True)
+
+        data.save()
+
+
+        return Response()

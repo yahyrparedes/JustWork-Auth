@@ -6,6 +6,8 @@ from django.contrib.auth.models import (
 )
 
 
+#
+
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None):
         """
@@ -42,6 +44,7 @@ class MyUser(AbstractBaseUser):
         unique=True,
     )
     is_active = models.BooleanField(default=True)
+    is_company = models.BooleanField(default=False) # Postulante por defecto
     is_admin = models.BooleanField(default=False)
 
     objects = MyUserManager()
